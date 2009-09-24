@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 STDOUT.sync = true
 STDERR.sync = true
 
@@ -12,14 +14,14 @@ at_exit do
     io.write "<div id='exception_report' class='framed'>\n"
     io.write "<p id='exception'><strong>#{e.class.name}:</strong> #{CGI.escapeHTML e.message.sub(/`(\w+)'/, '‘\1’').sub(/ -- /, ' — ')}</p>\n"
 
-    io.write "<blockquote><table border='0' cellspacing='0' cellpadding='0'>\n"
+    io.write "<blockquote><table border='0' cellspacing='4' cellpadding='0'>\n"
 
     e.backtrace.each do |b|
       if b =~ /(.*?):(\d+)(?::in\s*`(.*?)')?/ then
         file, line, method = $1, $2, $3
 
         url, display_name = '', 'untitled document';
-        if file != '-' && File.exists?(file) then
+        if file != '-' && File.exists?(file) && !ENV['TM_SCRIPT_IS_UNTITLED'] then
           file = Pathname.new(file).realpath.to_s
           url = '&url=file://' + e_url(file)
           display_name = File.basename(file)

@@ -5,7 +5,9 @@
 	<key>beforeRunningCommand</key>
 	<string>saveActiveFile</string>
 	<key>command</key>
-	<string># Assumes the current file is a unittest file
+	<string>#!/bin/sh
+
+# Assumes the current file is a unittest file
 # Runs with the currently-focused method as the test name
 
 args=$(${TM_RUBY:=ruby} &lt;&lt;"EOF"
@@ -28,7 +30,7 @@ if !context.empty? &amp;&amp; !should.empty?
   puts "shoulda"
   context = parse_from_quotes( context )
   name = "#{context}".gsub(/[\+\.\s\'\"\(\)]/,'.')
-  print "--name=/#{name}/ -v v"  
+  print "--name=/#{name}/"  
 end
 
 EOF)
@@ -36,10 +38,10 @@ EOF)
 if [[ -z "$args" ]]; then
   echo -e "This doesn't appear to be a TestCase class."
   exit_show_tool_tip
-  fi
+fi
 
-  export RUBYLIB="$TM_BUNDLE_SUPPORT/RubyMate${RUBYLIB:+:$RUBYLIB}"
-  "${TM_RUBY:-ruby}" -- "$TM_BUNDLE_SUPPORT/RubyMate/run_script.rb" $args</string>
+export RUBYLIB="$TM_BUNDLE_SUPPORT/RubyMate${RUBYLIB:+:$RUBYLIB}"
+"${TM_RUBY:-ruby}" -- "$TM_BUNDLE_SUPPORT/RubyMate/run_script.rb" $args</string>
 	<key>fallbackInput</key>
 	<string>scope</string>
 	<key>input</key>
